@@ -1,0 +1,20 @@
+﻿<div ng-controller="WttPageController">
+    <div class="form-group">
+        <div id="descriptiondiv">
+            <textarea class="form-control" id="wttDescription" style="width: 50%; height: auto;" maxlength="500" ng-model="Description" ng-keyup="descriptionChange()" rows="3" placeholder="A brief description of the content on your page."></textarea>
+            <button popover-placement="left" popover-trigger="click" popover="{{htmlPopoverD}}"
+                    type="button" class="wtt-btn-info-s">
+                <i class="fa fa-question-circle"></i>
+            </button>
+            <h6 class="pull-right">
+                {{500 - Description.length}} remaining
+            </h6>
+        </div>       
+    </div>
+
+    <div class="form-group">
+        <a type="button" href="#" class="btn btn-sm btn-success" ng-click="compileWttContainer()" prevent-default="">
+            Update SEO suggestions
+        </a>
+    </div>     
+</div>

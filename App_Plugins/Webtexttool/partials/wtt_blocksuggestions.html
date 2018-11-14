@@ -1,0 +1,303 @@
+﻿<div class="wtt_box_logo">    
+    <img class="wtt-logo" alt="Webttextool logo"
+         src="../App_Plugins/Webtexttool/images/logo_hd.png" width="180px"/>
+    <div class="wtt-plans-info">
+        <p>Highly <a href="https://www.webtexttool.com/discover-webtexttool/" target="_blank">effective content</a> for everyone</p>
+    </div>
+</div>
+<script>
+    $('.dropdown-toggle').dropdown();
+</script>
+
+<div class="wtt_box" ng-show="auth" ng-cloak>
+    <div class="wtt_header">
+       Keyword analysis & suggestions
+        <button type="button" class="wtt-btn-collapse" ng-click="isCollapsed = !isCollapsed">
+            <i class="fa" ng-class="{'fa-minus-square': !isCollapsed, 'fa-plus-square': isCollapsed}"></i>
+        </button>
+    </div>
+
+    <div id="wtt_blocksearch"
+         ng-class="{'display-none': isCollapsed, 'display-block': !isCollapsed}" style="padding: 5px !important">
+
+        <div id="keyword-language-well">
+            <table class="wtt-form-table">
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="step-no">1. Select language/country</div>
+                        </td>
+                        <td style="text-align: right;">
+                            <button popover-placement="left" popover="{{htmlPopover}}"
+                                    popover-trigger="click" type="button" class="wtt-btn-info-2">
+                                <i class="fa fa-question-circle"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="wtt-country-list">
+                            <div class="dropdown">
+                                <a href="#" type="button" class="dropdown-toggle wtt-btn wtt-btn-default" data-toggle="dropdown">
+                                    <i class="flag flag-{{searchModel.selectedSource.Value}}"></i>
+                                    {{searchModel.selectedSource.Name}} <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu keyword-country-list" role="menu">
+                                    <li ng-repeat="keywordSource in KeywordSources"
+                                        ng-class="{active: searchModel.selectedSource == keywordSource}">
+                                        <a href="javascript:;"
+                                           ng-click="selectKeywordSource(keywordSource)">
+                                            <i class="flag flag-{{keywordSource.Value}}"></i>
+                                            {{keywordSource.Name}}
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="wtt-keyword" id="keyword-analysis-well">
+            <div class="step-no">2. Keyword analysis & selection</div>
+            <div class="cl-lg-6">
+                <div class="wtt-input-group">
+                    <input type="text" class="wtt-form-control" placeholder="Enter your keyword.." type="text" id="wtt-keyword"
+                           name="wtt_keyword" autocomplete="off"
+                           value="{{Keyword}}"
+                           ng-keyup="keywordChange()">
+                    <span class="wtt-input-group-btn">
+                        <input class="wtt-btn-2 wtt-btn-orange" type="button" value="Go!"
+                               id="wtt-keyword-check" ng-click="useMyKeyword()" />
+                    </span>
+                </div>
+            </div>
+
+            <div id="keyword-suggestion-button">
+                <input type="button" id="wtt-keyword-research" value="Give me suggestions"
+                       ng-click="submitSearchKeyword()"
+                       ng-disabled="userInfo.Credits <= 0 || userInfo.TrialDays < 0">                
+            </div>
+
+            <div ng-show="searchModel.SearchResults.length > 0" id="score-analysis-area">
+                <p class="lead text-center" style="margin: 5px;">
+                    <em>&ldquo;{{inputKeywordResult.Keyword}}&rdquo;</em> keyword score:
+                </p>
+                <div class="row" id="keyword-score-area">
+                    <ul class="details-list list-unstyled list-inline" data-items-per-row="3">
+                        <li>
+                            <div class="score-box {{inputKeywordResult.SearchVolumeScoreAttrs.className}}"
+                                 popover="{{inputKeywordResult.SearchVolumeScoreAttrs.helpText}}"
+                                 popover-title="{{inputKeywordResult.SearchVolumeScoreAttrs.label}}"
+                                 popover-trigger="mouseenter" container="body"
+                                 popover-placement="top">
+                                <p class="label">Volume</p>
+                                <div class="score-box-content">
+                                    <p class="value">
+                                        <i class="fa fa-square"></i>
+                                        {{inputKeywordResult.SearchVolumeScoreAttrs.label}}
+                                    </p>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="score-box {{inputKeywordResult.CompetitionScoreAttrs.className}}"
+                                 popover="{{inputKeywordResult.CompetitionScoreAttrs.helpText}}"
+                                 popover-title="{{inputKeywordResult.CompetitionScoreAttrs.label}}"
+                                 popover-trigger="mouseenter" container="body"
+                                 popover-placement="top">
+                                <p class="label">Competition</p>
+                                <div class="score-box-content">
+                                    <p class="value">
+                                        <i class="fa fa-square"></i>
+                                        {{inputKeywordResult.CompetitionScoreAttrs.label}}
+                                    </p>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="score-box"
+                                 popover="{{inputKeywordResult.OverallScoreHelp}}"
+                                 popover-html="{{inputKeywordResult.OverallScoreLabel}}"
+                                 popover-trigger="mouseenter" container="body"
+                                 popover-placement="top">
+                                <p class="label">Overall</p>
+                                <div class="score-box-content {{inputKeywordResult.OverallScoreClass}}">
+                                    <p class="value">{{inputKeywordResult.OverallScoreLabel}}</p>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="wtt-well wtt-well-custom wtt-well-step" id="related-keywords-well"
+                 ng-if="searchModel.SearchResults.length > 0">
+                <p style="color: #f09000; font-weight: 700; text-align: left !important; padding-left: 10px;">
+                    Related keywords that might be relevant for you
+                </p>
+
+                <div class="clearfix" id="related-keywords-wrapper">
+                    <scrollable-table watch="searchModel.SearchResults">
+                        <table class="table table-custom results-table" id="suggetionsTable">
+                            <thead>
+                                <tr >
+                                    <th sortable-header col="Keyword">Keyword</th>
+                                    <th>Volume</th>
+                                    <th colspan="2">Competition</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="relatedKeyword in searchModel.SearchResults">
+                                    <td>
+                                        <a href="javascript:;" class="keyBox"
+                                           ng-click="useRelatedKeyword(relatedKeyword);">
+                                            <span class="keyword wtt-label {{relatedKeyword.OverallScoreLabelClass}}">{{relatedKeyword.Keyword}}</span>
+                                        </a>
+                                    </td>
+                                    <td class="search-volume">
+                                        <span class="interval">
+                                            <i class="fa fa-square {{relatedKeyword.SearchVolumeScoreAttrs.className}}"></i>
+                                            <span class="int-value">{{relatedKeyword.SearchVolumeScoreAttrs.label}}</span>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="interval">
+                                            <i class="fa fa-square {{relatedKeyword.CompetitionScoreAttrs.className}}"></i>
+                                            <span class="int-value">{{relatedKeyword.CompetitionScoreAttrs.label}}</span>
+                                        </span>
+                                    </td>
+                                    <td class="text-right">
+                                        <input type="button" class="suggestion-button"
+                                               ng-click="fillKeyword(relatedKeyword)" value="Suggestions" />
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </scrollable-table>
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align:center;">
+            <table class="wtt-form-table">
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="step-no">3. Add synonyms (optional)</div>
+                        </td>
+                        <td style="text-align: right;">
+                            <button popover-placement="left" popover="{{htmlPopoverP}}"
+                                    popover-trigger="click" type="button" class="wtt-btn-info-2">
+                                <i class="fa fa-question-circle"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div>
+                                <tags-input ng-model="pageKeywordSynonyms2" placeholder="Add"
+                                            replace-spaces-with-dashes="false" class="ti-bootstrap wtt-edit"
+                                            on-tag-added=onSynonymsAdded($tag) on-tag-removed=onSynonymsRemoved($tag)>
+                                </tags-input>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="wtt_box" ng-show="auth" style="clear: both">
+    <div id="wtt_blockseo" ng-class="{}">
+        <div class="wtt_header">
+            SEO Suggestions
+            <button popover-placement="left" popover-trigger="click" popover="{{htmlPopoverS}}"
+                    type="button" class="wtt-btn-info-s">
+                <i class="fa fa-question-circle"></i>
+            </button>
+        </div>
+        <aside class="sidebar " ng-show="isCollapsed">
+            <div class="page-info" ng-cloak>
+                <label class="sub-label">Keyword:</label>
+                <div class="keyBox" ng-click="isCollapsed = !isCollapsed">
+                    <span class="keyword">{{Keyword}}</span>
+                </div>
+            </div>
+
+            <div class="wtt-tabs-container" style="display: flow-root;" ng-show="isCollapsed">
+                <div class="wtt-sidebar-tab-menu">
+                    <ul class="wtt-nav wtt-nav-tabs" role="tablist">
+                        <li ng-class="{'active':activeEngine=='seo'}">
+                            <a href="javascript:;"
+                               ng-click="selectEngine('seo')">
+                                SEO
+                            </a>
+                        </li>
+                        <li ng-class="{'active':activeEngine=='content'}">
+                            <a href="javascript:;"
+                               ng-click="selectEngine('content')">
+                                CONTENT
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="wtt-tbl wtt-page-score-area" ng-cloak>
+
+                <div class="sk-circle" ng-show="loading">
+                    <div class="sk-circle1 sk-child"></div>
+                    <div class="sk-circle2 sk-child"></div>
+                    <div class="sk-circle3 sk-child"></div>
+                    <div class="sk-circle4 sk-child"></div>
+                    <div class="sk-circle5 sk-child"></div>
+                    <div class="sk-circle6 sk-child"></div>
+                    <div class="sk-circle7 sk-child"></div>
+                    <div class="sk-circle8 sk-child"></div>
+                    <div class="sk-circle9 sk-child"></div>
+                    <div class="sk-circle10 sk-child"></div>
+                    <div class="sk-circle11 sk-child"></div>
+                    <div class="sk-circle12 sk-child"></div>
+                </div>
+
+                <div class="wtt-tbl-cell" id="wtt-page-score-container" ng-show="showScore" style="padding-left: 60px;">
+                    <div ng-class="seoClass" id="wtt-page-score" title="{{seoScoreTag}}">
+                        <span class="page-score-text">{{seoScore | number: 0}}%</span>
+                        <canvas tc-chartjs-doughnut chart-data="seoPageScoreData"
+                                chart-options="pageScoreChartOptions" width="110" height="110"></canvas>
+                    </div>
+                </div>
+
+                <div class="wtt-tbl-cell" ng-show="showScore" style="padding-right: 40px;">
+                    <div ng-class="contentClass" id="wtt-content-score" title="{{contentScoreTag}}">
+                        <span class="page-score-text">{{contentScore | number: 0}}%</span>
+                        <canvas tc-chartjs-doughnut chart-data="contentPageScoreData"
+                                chart-options="pageScoreChartOptions" width="110" height="110"></canvas>
+                    </div>
+                </div>
+
+                <div class="wtt-tbl-cell wtt-score-error" ng-show="showError">
+                    <i class="fa fa-exclamation-triangle" aria-hidden="true"></i><br />{{error}}
+                </div>
+
+            </div>
+
+            <div style="overflow: auto; max-height: 60vh;">
+
+                <div class="suggestions-mask seo" id="suggestionsContainer" ng-show="activeEngine == 'seo'">
+
+                    <div class="suggestions">
+                        <wtt-suggestion ng-repeat="suggestion in suggestions"
+                                        suggestion="suggestion"
+                                        index="{{$index}}">
+                        </wtt-suggestion>
+                    </div>
+                </div>
+
+                <wtt-content-quality ng-show="activeEngine == 'content'"></wtt-content-quality>
+            </div>
+        </aside>
+    </div>
+</div>

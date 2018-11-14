@@ -1,0 +1,234 @@
+﻿.wtt_view_title, h3.wtt-plan-title {
+    line-height: initial;
+    font-weight: 400
+}
+
+.inside a {
+    text-decoration: underline;
+    font-size: 13px;
+}
+
+p.description {
+    font-size: 13px;
+    font-style: italic;
+    color: #666;
+    padding: 5px 3px
+}
+
+.webtexttool-logo {
+    float: right
+}
+
+.postbox .postbox-title {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 20px !important
+}
+
+.alert {
+    padding: 15px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    border: 1px solid transparent;
+    border-radius: 4px
+}
+
+.alert-danger {
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1
+}
+
+.alert-warning {
+    color: #8a6d3b;
+    background-color: #fcf8e3;
+    border-color: #faebcc
+}
+
+.form-table td:first-child {
+    max-width: 70px
+}
+
+#wtt-plans, hr.wtt-hr {
+    max-width: 940px
+}
+
+.wrap {
+    padding: 0 5px 5px
+}
+
+hr.wtt-hr {
+    margin: 10px 0
+}
+
+.wtt_view_title {
+    color: #F6A01A;
+    font-size: 20px;
+    margin: .5em 0
+}
+
+.fa-ul li a {
+    color: #363B3F !important;
+    font-size: 14px;
+    text-decoration: none;
+}
+
+.fa-ul li a:hover {
+    color: #0096dd !important
+}
+
+ul.fa-ul {
+    margin-top: 15px;
+    margin-bottom: 15px
+}
+
+.wtt-plan {
+    padding-bottom: 10px
+}
+
+h3.wtt-plan-title {
+    font-size: 20px
+}
+
+.wtt-plan .plan-details {
+    padding-left: 0;
+    width: auto
+}
+
+.wtt-plan ul {
+    list-style: none;
+    padding: 0;
+    margin: 0
+}
+
+.plan-details li {
+    width: auto;
+    padding-left: 10px;
+    margin: 10px 0
+}
+
+.plan-item .value-no {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1;
+    color: #363e42
+}
+
+.plan-item .value-label {
+    font-size: 16px;
+    color: #999;
+    font-weight: 400
+}
+
+.subscription-button a:hover {
+    color: #fff;
+    background-color: #ec991a
+}
+
+.subscription-label {
+    display: block;
+    color: #fff;
+    line-height: 40px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0 auto;
+    width: 99%;
+    max-width: 275px;
+    border-radius: 3px
+}
+
+.subscription-label-orange {
+    background-color: #F6A01A
+}
+
+.wtt_helpside {
+    float: right;
+    clear: right;
+    width: 240px;
+    min-height: 100%;
+    margin: 10px;
+    padding: 0;
+    overflow: hidden
+}
+
+@media only screen and (max-width:1024px) {
+    .wtt_helpside {
+        clear: both;
+        float: left;
+        width: 808px;
+        height: 275px;
+        margin: 0;
+        padding: 0
+    }
+}
+
+.wtt_title {
+    font-weight: 700;
+    font-size: 15px
+}
+
+.wtt_helpside ul {
+    margin: 5px 0
+}
+
+.wtt_helpside li {
+    font-size: 13px;
+    color: #999;
+    margin-bottom: 7px
+}
+
+    .wtt_helpside li.wtt_center {
+        text-align: center
+    }
+
+.wtt_helpside > div {
+    border: 1px solid #ccc;
+    background-color: #fcfcfc;
+    padding: 10px;
+    min-height: 150px;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 1px 0 #ccc
+}
+
+@media only screen and (max-width:1024px) {
+    .wtt_helpside > div {
+        float: left;
+        width: 240px;
+        border: 1px solid #ccc;
+        background-color: #fcfcfc;
+        padding: 10px;
+        margin: 10px 5px 10px 0;
+        height: 200px
+    }
+}
+
+@media screen and (-ms-high-contrast:active),(-ms-high-contrast:none) {
+    .view_title {
+        line-height: normal
+    }
+}
+
+.wtt-loading-template {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url(../images/wtt-loading-template.png) 50% 80px no-repeat
+}
+
+.postbox > h3 {
+    font-size: 23px;
+    padding: 5px 0;
+    margin: 0;
+    line-height: 1.4;
+}
+
+#post-body {
+    margin-right: 350px;
+}
+
+#post-body-content {
+    width: 100%;
+    float: left;
+}

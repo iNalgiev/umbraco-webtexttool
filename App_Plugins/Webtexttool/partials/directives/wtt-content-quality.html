@@ -1,0 +1,114 @@
+﻿<div class="suggestions-box">
+    <div class="suggestions-content">
+        <div class="dropup">
+            <button type="button" class="wtt-btn2 wtt-btn-info wtt-btn-block dropdown-toggle" title="Analyze content" ng-click="analyze()">
+                <i class="fa fa-rocket" aria-hidden="true"></i>
+                Analyze content
+            </button>
+        </div>
+    </div>
+</div>
+
+<script type="text/ng-template" id="suggestion-popover-template2.html">
+    <div>
+        We have calculated three readability scores for your content and averaged this in
+        the overall readability score. Below you will find the specific scores and a link with more
+        information about each of them.
+    </div>
+</script>
+
+<script type="text/ng-template" id="suggestion-popover-template1.html">
+    <div ng-bind-html="showReadingLevelHelp"></div>
+</script>
+
+<div class="suggestions-mask cq">
+    <div class="suggestions">
+        <div class="suggestions-box" ng-show="contentQualityDetails">
+            <div class="suggestions-header">
+                <button class="wtt-btn-collapse" type="button" ng-click="isSuggestionDetailsCollapsed = !isSuggestionDetailsCollapsed">
+                    <i class="fa" ng-class="{'fa-angle-down': !isSuggestionDetailsCollapsed, 'fa-angle-right': isSuggestionDetailsCollapsed}"></i>
+                </button>
+                <h3>Text statistics</h3>
+                <progressbar animate="true" max="10" value="10" type="success"></progressbar>
+            </div>
+            <div class="suggestions-content" collapse="isSuggestionDetailsCollapsed">
+                <ul class="suggestions-list">
+                    <li>Reading Time:<span class="pull-right">{{contentQualityDetails.ReadingTime}}</span></li>
+                    <li>Reading Level: <span class="pull-right">{{contentQualityDetails.ReadingLevel}}<button ng-hide="contentQualityDetails.ReadingValues" class="wtt-btn wtt-btn-link wtt-btn-xs wtt-btn-help wtt-btn-help-cq" type="button" style="position: relative; top: -2px;"
+                                                                                                              popover="{{showReadingLevelHelp}}"
+                                                                                                              popover-trigger="mouseenter" popover-placement="left"><i class="fa fa-question-circle"></i></button></span></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="suggestions-box" ng-show="contentQualityDetails.ReadingValues">
+
+            <div class="suggestions-header">
+                <button class="wtt-btn-collapse" type="button"
+                        ng-click="isReadingLevelDetailsCollapsed = !isReadingLevelDetailsCollapsed">
+                    <i class="fa"
+                       ng-class="{'fa-angle-down': !isReadingLevelDetailsCollapsed, 'fa-angle-right': isReadingLevelDetailsCollapsed}"></i>
+                </button>
+                <h3>Reading Level Details</h3>
+                <button class="wtt-btn wtt-btn-link wtt-btn-xs wtt-btn-help wtt-btn-help-cq" type="button"
+                        popover="{{tip}}"
+                        popover-trigger="mouseenter" popover-placement="auto top">
+                    <i class="fa fa-question-circle"></i>
+                </button>
+            </div>
+            <div class="suggestions-content" collapse="isReadingLevelDetailsCollapsed">
+                <table style="width: 100%; font-size: 11.5px;">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <a href="https://en.wikipedia.org/wiki/Coleman%E2%80%93Liau_index" target="_blank">
+                                    Coleman Liau
+                                    Index
+                                </a>
+                            </td>
+                            <td> {{contentQualityDetails.ReadingValues.ColemanLiauIndex | number : 1}}</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <a href="https://en.wikipedia.org/wiki/Automated_readability_index" target="_blank">
+                                    Automated
+                                    Readability Index
+                                </a>
+                            </td>
+                            <td> {{contentQualityDetails.ReadingValues.AutomatedReadabilityIndex | number : 1}}</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <a href="https://en.wikipedia.org/wiki/Flesch%E2%80%93Kincaid_readability_tests"
+                                   target="_blank">Flesch-Kincaid Reading ease</a>
+                            </td>
+                            <td> {{contentQualityDetails.ReadingValues.FleschKincaidReadingEasy | number : 1}}</td>
+                        </tr>
+                        <tr>
+                            <td> Average</td>
+                            <td>
+                                {{contentQualityDetails.ReadingValues.ReadingAvg | number : 1}}
+                                ({{contentQualityDetails.ReadingLevel}})
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="suggestions-box" ng-hide="contentQualityDetails">
+            <div class="suggestions-content" collapse="isSuggestionDetailsCollapsed">
+                <ul class="suggestions-list">
+                    <li>
+                        <div style="color: #333333; font-size: 11px;">
+                            This <a href="https://www.webtexttool.com/knowledgebase/what-is-the-text-conversion-optimizer-tco/" target="_blank" style="background-color: transparent;">module analyses</a> your text and gives you tips to increase readability and conversion. It’s available in selected plans.
+                            <span>Running a check costs 1 credit (</span><a href="https://app.webtexttool.com/#/app/account" target="_blank" style="font-size: 11px;">view current balance</a><span style="font-size: 11px;">).</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <wtt-suggestion-content-quality ng-repeat="suggestion in contentQualitySuggestions" suggestion="suggestion" index="{{$index}}" settings="settings"></wtt-suggestion-content-quality>
+    </div>
+</div>
+

@@ -1,0 +1,27 @@
+﻿{
+  propertyEditors: [
+    {
+      alias: "My.Webtexttool",
+      name: "Webtexttool SEO",
+      icon: "icon-code",
+      group: "Rich Content",
+      editor: {
+        view: "~/App_Plugins/Webtexttool/webtexttool.html"
+      }
+    }
+  ],
+  //array of files we want to inject into the application on app_start
+  javascript: [
+    '~/App_Plugins/Webtexttool/js/wtt-core.min.js',
+    '~/App_Plugins/Webtexttool/js/controllers/wttcore.controller.js',
+    '~/App_Plugins/Webtexttool/js/controllers/wttdashboard.controller.js',
+	'~/App_Plugins/Webtexttool/js/getHtmlContent.js'
+  ],
+  css: [
+    '~/App_Plugins/Webtexttool/css/flag.min.css',
+    '~/App_Plugins/Webtexttool/css/ng-tags-input.css',
+    '~/App_Plugins/Webtexttool/css/scrollable-table.min.css',
+    '~/App_Plugins/Webtexttool/css/wtt-core.css',
+	'~/App_Plugins/Webtexttool/css/wtt-admin.css'
+  ]
+}

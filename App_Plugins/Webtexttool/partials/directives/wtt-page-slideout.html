@@ -1,0 +1,74 @@
+<div id="slideout">
+    <div ng-if="info.Type=='info'" class="scrollable">
+        <table>
+            <tr>
+                <td colspan="2" class="sub-title">
+                    <span ng-bind-html="info.Description"></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="tags" colspan="2">
+                    <span class="post-tag cursor-default"
+                          popover="{{item.tip}}" popover-title="Suggestions:" popover-trigger="mouseenter" ng-class="item.type"
+                          popover-placement="top" ng-repeat="item in info.tags track by $index">
+                        {{item.word}}<span class="badge" ng-show="item.count > 1"> {{item.count}}</span><i ng-show="item.dataSource"
+                                                                                                           class="fa fa-lg fa-lightbulb-o tag-lightbulb"></i>
+                    </span>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div ng-if="info.Type=='list' || info.Type=='listex'" class="scrollable">
+        <table>
+            <tr>
+                <td colspan="2" class="sub-title">
+                    <span ng-bind-html="info.Description"></span>
+                </td>
+            </tr>
+            <td class="tags" colspan="2">
+                <span class="post-tag" ng-repeat="item in info.tags track by $index"
+                      popover="{{item.dataSource}}" popover-title="Suggestions:" popover-trigger="mouseenter"
+                     popover-placement="top">
+                    {{item.word}} <span class="badge" ng-show="item.Count > 1">{{item.count}}</span>
+                    <i ng-show="item.dataSource" class="fa fa-lg fa-lightbulb-o" style="color:orange"></i>
+                </span>
+            </td>
+        </table>
+    </div>
+    <div ng-if="info.Type=='fullList'" class="scrollable">
+        <table>
+            <tr>
+                <td colspan="2" class="sub-title">
+                    <span ng-bind-html="info.Description"></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="tags" colspan="2">
+                    <span class="post-tag" ng-class="item.type"
+                          ng-repeat="item in info.tags track by $index" popover="{{item.dataSource}}" popover-title="Suggestions:" popover-trigger="mouseenter"
+                          popover-placement="top">{{item.word}}<span class="badge" ng-show="item.Count > 1">{{item.count}}</span><i ng-show="item.dataSource" class="fa fa-lg fa-lightbulb-o" style="color:orange"></i></span>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div ng-if="info.Type=='suggestions'">
+        <table>
+            <tr>
+                <td colspan="3" class="sub-title">
+                    <span ng-bind-html="info.Description"></span>
+                </td>
+            </tr>
+            <tr ng-repeat="item in info.tags track by $index">
+                <td class="td-left tags">
+                    <span class="post-tag post-tag-orange" ng-repeat="from in item.From track by $index" ng-click="markText(from)">{{from}}</span>
+                </td>
+                <td ng-if="item.To.length > 0" class="td-center">
+                    <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                </td>
+                <td class="td-right">
+                    <span class="post-tag" ng-repeat="to in item.To track by $index">{{to}}</span>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>

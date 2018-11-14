@@ -1,0 +1,94 @@
+<div id="webtexttool-login" ng-hide="wttAuth" class="wrap" ng-cloak>
+
+    <div id="poststuff">
+
+        <div id="post-body" class="metabox-holder columns-2">
+
+            <div id="post-body-content">
+
+                <div class="postbox">
+
+                    <h3 class="postbox-title">
+                        <span>Webtexttool login</span>
+                        <img class="webtexttool-logo" ng-src="{{logo}}"
+                             alt="webtexttool logo"/>
+                    </h3>
+
+                    <div class="inside">
+                        <p class="description">Use your webtexttool account credentials to log in the form below or apply the API key. <br/>
+                            Please note that these are not your Umbraco username and password. <br/><br/>
+                            If you don't have an account yet, you can easily create one for free <a ng-href="{{WttAppUrl}}register-free" target="_blank"><strong>here</strong></a>.
+                            To generate an API key, please contact us.</p>
+
+                        <div ng-if="error != null" class="alert alert-danger" role="alert">
+                            <strong>{{error}}</strong>
+                        </div>
+
+                        <form class="wtt-form" role="form" name="loginForm">
+                            <table class="form-table">
+                                <tr>
+                                    <td>
+                                        <label>E-mail:</label>
+                                    </td>
+                                    <td>
+                                        <input type="email" name="e-mail" class="regular-text"
+                                               placeholder="E-mail"
+                                               required="required" ng-model="loginModel.UserName" style="border-radius: 3px;" />
+                                    </td>
+                                </tr>
+                                <tr class="alternate">
+                                    <td>
+                                        <label>Password:</label>
+                                    </td>
+                                    <td>
+                                        <input type="password" name="password" class="regular-text"
+                                               placeholder="Password" required="required"
+                                               ng-model="loginModel.Password" style="border-radius: 3px;" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <button type="submit" class="btn btn-primary btn-small btn-signin" ng-click="login()">
+                                            Sign in
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <a id="forgot-password-link" ng-href="{{WttAppUrl}}forgot" target="_blank">I forgot my password</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        &nbsp;
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        &nbsp;
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label>API Key:</label>
+                                    </td>
+                                    <td>
+                                        <input type="text" name="apikey" class="regular-text"
+                                               placeholder="API Key"
+                                               ng-model="apiKey.value" style="border-radius: 3px; min-width: 100% !important;" />                                        
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <button type="submit" class="btn btn-primary btn-small btn-signin" ng-click="saveApiKey()">
+                                            Apply
+                                        </button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
