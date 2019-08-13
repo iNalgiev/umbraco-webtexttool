@@ -9,16 +9,18 @@
                 <div class="postbox">
 
                     <h3 class="postbox-title">
-                        <span>Webtexttool login</span>
-                        <img class="webtexttool-logo" ng-src="{{logo}}"
-                             alt="webtexttool logo"/>
+                        <span>Textmetrics login</span>
+                        <img class="webtexttool-logo" ng-src="{{logo}}" width="210"
+                             alt="textmetrics-logo"/>
                     </h3>
 
                     <div class="inside">
-                        <p class="description">Use your webtexttool account credentials to log in the form below or apply the API key. <br/>
-                            Please note that these are not your Umbraco username and password. <br/><br/>
+                        <p class="description">
+                            Use your Textmetrics account credentials to log in the form below or apply the API key. <br />
+                            Please note that these are not your Umbraco username and password. <br /><br />
                             If you don't have an account yet, you can easily create one for free <a ng-href="{{WttAppUrl}}register-free" target="_blank"><strong>here</strong></a>.
-                            To generate an API key, please contact us.</p>
+                            To generate an API key, please contact us.
+                        </p>
 
                         <div ng-if="error != null" class="alert alert-danger" role="alert">
                             <strong>{{error}}</strong>

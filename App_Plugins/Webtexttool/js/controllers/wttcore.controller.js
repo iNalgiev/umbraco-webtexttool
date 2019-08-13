@@ -1,5 +1,5 @@
 ﻿var app = angular.module("umbraco");
-var api_base_url = "https://api.webtexttool.com/",
+var api_base_url = "https://api.textmetrics.com/",
     edit_content_url = "/content/edit",
     login_url = "/login";
 
@@ -34,7 +34,7 @@ app.config(['$httpProvider', function ($httpProvider) {
     $httpProvider.interceptors.push(["$q", "content-events-service", function ($q, httpEvents) {
         return {
             request: function (request) {
-                if (request.url.indexOf("api.webtexttool.com") > 0) {
+                if (request.url.indexOf("api.textmetrics.com") > 0) {
                     request.headers = request.headers || {};
                     request.headers.Authorization = 'Bearer ' + localStorage.getItem('wtt_token');
                     request.headers.WttSource = 'Umbraco';
@@ -64,8 +64,8 @@ angular.module("umbraco.resources").factory("wttResource", function ($http) {
     };
 });
 
-app.controller("WttPageController", ["content-events-service", "$scope", "httpService", "$q", "$cookies", "languageService", "keywordService", "$cookieStore", "suggestionsService", "stateService", "$sanitize", "$compile", "synonymService", "wttResource", "editorState",
-    function (httpEvents, $scope, httpService, $q, $cookies, languageService, keywordService, $cookieStore, suggestionsService, stateService, $sanitize, $compile, synonymService, wttResource, editorState) {
+app.controller("WttPageController", ["content-events-service", "$scope", "httpService", "$q", "$cookies", "languageService", "keywordService", "$cookieStore", "suggestionsService", "stateService", "$sanitize", "$compile", "synonymService", "wttResource", "editorState", "$filter",
+    function (httpEvents, $scope, httpService, $q, $cookies, languageService, keywordService, $cookieStore, suggestionsService, stateService, $sanitize, $compile, synonymService, wttResource, editorState, $filter) {
     var wttApiBaseUrl = api_base_url;
     var apiKey;
     var authCode;
@@ -194,7 +194,7 @@ app.controller("WttPageController", ["content-events-service", "$scope", "httpSe
 
                 $scope.htmlPopover = $sanitize('Select for which language/country you want to optimize your content. Enter your keyword. Add synonyms (optional).');
                 $scope.htmlPopoverS = $sanitize('While writing, multiple suggestions appear here. These suggestions tell you how you can improve your text for the search engines, according to the latest SEO rules, but also how to structure your text for your readers. Following these suggestions, will raise your optimization score!');
-                $scope.htmlPopoverP = $sanitize('Here you can set max 3 alternative keywords that support the main keyword.');
+                $scope.htmlPopoverP = $sanitize('Here you can set max 20 alternative keywords that support the main keyword.');
                 $scope.htmlPopoverD = $sanitize("This is the summary of your page that will be shown in the search results and what a potential visitor of your page will see. So it's important to create a catchy description of your page.");
 
                 $scope.activeLanguageCode = "en";
@@ -302,7 +302,7 @@ app.controller("WttPageController", ["content-events-service", "$scope", "httpSe
                 function loadKeywordSources() {
                     keywordService.getKeywordSources().then(
                         function loaded(keywordSources) {
-                            $scope.KeywordSources = keywordSources;
+                            $scope.KeywordSources = $filter('orderBy')(keywordSources, "Country", false);
 
                             var appLanguageCode = languageService.getActiveLanguageCode().replace(/""/g, "");
                             var mappedLanguageCode = keywordSourceCodeMap[appLanguageCode] || appLanguageCode;
@@ -585,9 +585,10 @@ app.controller("WttPageController", ["content-events-service", "$scope", "httpSe
                             top: '0',
                             right: '0',
                             height: '100%',
-                            zIndex: '999000',
+                            zIndex: '7400',
                             width: '350px',
-                            background: '#fff'
+                            background: '#fff',
+                            border: '1px solid rgba(199, 199, 199, 0.5)'
                         });
                     if ($j('.umb-editor-wrapper').find("#Webtexttool_container").length <= 0) {
                         $j('.umb-editor-wrapper').append(div);
@@ -710,7 +711,7 @@ app.controller("WttPageController", ["content-events-service", "$scope", "httpSe
 
                         analyzeContentQuality(20);
                     } else {
-                        alert("Oops.. You can't do this now. This might not be included in your current webtexttool plan or you have run out of credits for this month.");
+                        alert("Oops.. You can't do this now. This might not be included in your current Textmetrics plan or you have run out of credits for this month.");
                     }
                 };
 
@@ -1409,6 +1410,19 @@ angular.module('umbraco.directives').directive('wttSuggestion', ["suggestionsSer
 
             var data = stateService.data;
             scope.data = data;
+            data.viewExtraInfoToggle = {};
+            scope.sliderInfo = {};
+
+
+            scope.$watch('suggestion.Rules', function (suggestion) {
+                // console.log('update suggestions');
+                _.each(suggestion.Rules, function (rule) {
+                    if (scope.data.viewExtraInfoToggle[rule.Text]) {
+                        // console.log('update rule: ' + rule);
+                        scope.processSliderInfo(rule);
+                    }
+                });
+            }, true);
 
             var tagMap = {
                 'Page Title': ['TITLE'],
@@ -1419,6 +1433,25 @@ angular.module('umbraco.directives').directive('wttSuggestion', ["suggestionsSer
             };
 
             var suggestionTags = tagMap[scope.suggestion.Tag];
+
+            scope.viewExtraInfoList = function (rule) {
+                if (scope.data.viewExtraInfoToggle[rule.Text] == null || scope.data.viewExtraInfoToggle[rule.Text] === true) {
+                    Object.keys(scope.data.viewExtraInfoToggle).forEach(function (ruleText, index) {
+                        scope.data.viewExtraInfoToggle[ruleText] = true;
+                    });
+
+                    scope.data.viewExtraInfoToggle[rule.Text] = false;
+                } else {
+                    scope.data.viewExtraInfoToggle[rule.Text] = true;
+                    return;
+                }
+
+                if (scope.sliderInfo[rule.Text] != null) {
+                    return;
+                }
+
+                scope.processSliderInfo(rule);
+            };
 
             scope.$on('WttPageController:selectNodes', function (event, selectedNodeNames) {
                 if (selectedNodeNames.length === 0) {
@@ -1483,6 +1516,31 @@ angular.module('umbraco.directives').directive('wttSuggestion', ["suggestionsSer
 
             setDisplayTexts();
 
+            scope.processTags = function (localSliderInfo) {
+                return _.map(localSliderInfo.List, function (item) {
+                    return {
+                        word: item.word,
+                        count: item.count,
+                        type: item.type || 'blue',
+                        dataSource: item.to && item.to.length > 0 ? item.to : null,
+                        tip: item.to ? item.to.map(function (ds) { return ds.word; }).join(", ") : '',
+                        suppressIgnore: localSliderInfo.SuppressIgnore
+                    };
+                });
+            };
+
+            scope.processSliderInfo = function (rule) {
+                scope.sliderInfo[rule.Text] = JSON.parse(rule.ExtraInfo);
+                var localSliderInfo = scope.sliderInfo[rule.Text];
+                localSliderInfo.tags = localSliderInfo.List;
+
+                if (localSliderInfo.Type == "info") {
+                    localSliderInfo.tags = scope.processTags(localSliderInfo);
+                    return localSliderInfo;
+                }
+
+                return localSliderInfo;
+            };
         }
     };
 }]);
@@ -1601,7 +1659,7 @@ angular.module("umbraco.directives").directive("wttSuggestionContentQuality", ["
                     }
 
                     scope.processSliderInfo(rule);
-                }
+                };
 
                 scope.processTags = function (localSliderInfo) {
                     return _.map(localSliderInfo.List, function (item) {
@@ -1626,43 +1684,53 @@ angular.module("umbraco.directives").directive("wttSuggestionContentQuality", ["
                         return localSliderInfo;
                     }
 
-                    if (localSliderInfo.Type == "list") {
-                        localSliderInfo.tags = _.chain(localSliderInfo.List).groupBy(function (item) {
-                            return item
-                        }).map(function (items, key) {
-                            return {
-                                word: key,
-                                count: items.length
-                            }
-                        }).value();
-                    } else if (localSliderInfo.Type == "fullList") {
-                        localSliderInfo.tags = _.chain(localSliderInfo.List).groupBy(function (item) {
-                            return item.Word
-                        }).map(function (items, key) {
-                            return {
-                                word: key,
-                                count: items.length,
-                                type: items.length > 0 ? items[0].Type : '',
-                                dataSource: items[0].To ? items[0].To.map(function (ds) { return ds.word; }).join(", ") : ''
-                            };
-                        }).value();
-                    }
-                    else if (localSliderInfo.Type == "listex") {
-                        localSliderInfo.tags = _.chain(localSliderInfo.List).map(function (item) {
-                            return {
-                                word: item.Name,
-                                count: item.Count,
-                                type: item.Type || '',
-                                dataSource: item.To || ''
-                            };
-                        }).value();
-                    }
-
                     return localSliderInfo;
                 };
             }
         };
     }]);
+
+angular.module("umbraco.directives").directive("wttSuggestionInfo", function () {
+    return {
+        templateUrl: "../App_Plugins/Webtexttool/partials/directives/wtt-suggestion-info.html",
+        scope: {
+            rule: "=",
+        },
+        restrict: 'E',
+        replace: true,
+        link: function (scope) {
+            scope.$watch('rule', function (rule) {
+                scope.processRule(rule);
+            }, true);
+
+            scope.processTags = function (localSliderInfo) {
+                return _.map(localSliderInfo.List, function (item) {
+                    return {
+                        word: item.word,
+                        count: item.count,
+                        type: item.type || 'blue',
+                        dataSource: item.to && item.to.length > 0 ? item.to : null,
+                        tip: item.to ? item.to.map(function (ds) { return ds.word; }).join(", ") : '',
+                        suppressIgnore: localSliderInfo.SuppressIgnore
+                    };
+                });
+            };
+
+            scope.processRule = function (rule) {
+                scope.info = JSON.parse(rule.ExtraInfo);
+                var localSliderInfo = scope.info;
+                localSliderInfo.tags = localSliderInfo.List;
+
+                if (localSliderInfo.Type == "info") {
+                    localSliderInfo.tags = scope.processTags(localSliderInfo);
+                    return localSliderInfo;
+                }
+
+                return localSliderInfo;
+            };
+        }
+    };
+});
 
 app.factory("languageService", ['httpService', '$cookieStore',
     function (httpService, $cookieStore) {        
@@ -1780,7 +1848,7 @@ app.factory("stateService", [function () {
         Resources: [
             {
                 "ResourceKey": "CQGenericError",
-                "HtmlContent": "We’re sorry, we could not analyze your content. Please try again or contact support@webtexttool.com in case the issues persist.",
+                "HtmlContent": "We're sorry, we could not analyze your content. Please try again or contact support@textmetrics.com in case the issues persist.",
                 "LanguageCode": "en"
             },
             {

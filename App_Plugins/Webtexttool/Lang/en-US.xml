@@ -2,6 +2,6 @@
 
 <language alias="en" intName="English (US)" localName="English (US)" lcid="" culture="en-US">
   <area alias="sections">
-    <key alias="webtexttool">Webtexttool</key>
+    <key alias="webtexttool">Textmetrics</key>
   </area>
 </language>

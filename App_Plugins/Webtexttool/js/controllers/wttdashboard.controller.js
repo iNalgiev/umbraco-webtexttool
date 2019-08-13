@@ -4,7 +4,7 @@
         $httpProvider.interceptors.push(["$q", function ($q) {
             return {
                 request: function (config) {
-                    if (config.url.indexOf("api.webtexttool.com") > 0) {
+                    if (config.url.indexOf("api.textmetrics.com") > 0) {
                         config.headers = config.headers || {};
                         config.headers.Authorization = 'Bearer ' + localStorage.getItem('wtt_token');
                         config.headers.WttSource = 'Umbraco';
@@ -35,10 +35,10 @@
             $scope.error = null;
             $scope.message = "Invalid Email or Password";
             $scope.loading = false;
-            $scope.logo = "../App_Plugins/Webtexttool/images/logo_hd.png";
+            $scope.logo = "../App_Plugins/Webtexttool/images/tm_logo.png";
             $scope.promiseMessage = "Please wait...";
-            var wttApiBaseUrl = "https://api.webtexttool.com/"; //wtt_admin_globals.wtt_base_api_url;
-            $scope.WttAppUrl = "https://app.webtexttool.com/#/";
+            var wttApiBaseUrl = "https://api.textmetrics.com/"; //wtt_admin_globals.wtt_base_api_url;
+            $scope.WttAppUrl = "https://app.textmetrics.com/#/";
             $scope.apiKey = {
                 value: ""
             };

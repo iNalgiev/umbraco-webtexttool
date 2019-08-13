@@ -8,7 +8,7 @@ using Umbraco.Web.Trees;
 
 namespace Webtexttool.Controllers
 {
-    [Tree("webtexttool", "webtexttoolTree", "Webtexttool", iconClosed:"icon-folder", iconOpen:"icon-folder-open")]
+    [Tree("webtexttool", "webtexttoolTree", "Textmetrics", iconClosed:"icon-folder", iconOpen:"icon-folder-open")]
     [PluginController("Webtexttool")]
     public class DashboardTreeController : TreeController
     {

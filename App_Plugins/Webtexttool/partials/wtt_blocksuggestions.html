@@ -1,8 +1,8 @@
 ﻿<div class="wtt_box_logo">    
-    <img class="wtt-logo" alt="Webttextool logo"
-         src="../App_Plugins/Webtexttool/images/logo_hd.png" width="180px"/>
+    <img class="wtt-logo" alt="textmetrics-logo"
+         src="../App_Plugins/Webtexttool/images/tm_logo.png" width="180px"/>
     <div class="wtt-plans-info">
-        <p>Highly <a href="https://www.webtexttool.com/discover-webtexttool/" target="_blank">effective content</a> for everyone</p>
+        <p>Make <a href="https://www.textmetrics.com/discover-textmetrics/" target="_blank">every</a> word count</p>
     </div>
 </div>
 <script>
@@ -38,7 +38,7 @@
                         <td colspan="2" class="wtt-country-list">
                             <div class="dropdown">
                                 <a href="#" type="button" class="dropdown-toggle wtt-btn wtt-btn-default" data-toggle="dropdown">
-                                    <i class="flag flag-{{searchModel.selectedSource.Value}}"></i>
+                                    <i class="flag flag-{{searchModel.selectedSource.Country}}"></i>
                                     {{searchModel.selectedSource.Name}} <span class="caret"></span>
                                 </a>
                                 <ul class="dropdown-menu keyword-country-list" role="menu">
@@ -46,7 +46,7 @@
                                         ng-class="{active: searchModel.selectedSource == keywordSource}">
                                         <a href="javascript:;"
                                            ng-click="selectKeywordSource(keywordSource)">
-                                            <i class="flag flag-{{keywordSource.Value}}"></i>
+                                            <i class="flag flag-{{keywordSource.Country}}"></i>
                                             {{keywordSource.Name}}
                                         </a>
                                     </li>
@@ -133,7 +133,7 @@
 
             <div class="wtt-well wtt-well-custom wtt-well-step" id="related-keywords-well"
                  ng-if="searchModel.SearchResults.length > 0">
-                <p style="color: #f09000; font-weight: 700; text-align: left !important; padding-left: 10px;">
+                <p style="color: #1F7DC4; font-weight: 700; text-align: left !important; padding-left: 10px;">
                     Related keywords that might be relevant for you
                 </p>
 

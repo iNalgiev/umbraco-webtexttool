@@ -23,7 +23,7 @@
     <div class="suggestions-content" collapse="suggestion.isCollapsed">
         <div style="text-align: center;padding-bottom: 10px;" ng-if="actionConfig.buttons.length > 0">
             <div class="wtt-btn-group">
-                <a type="button" class="wtt-btn wtt-btn-xs" ng-class="actionConfig.selected(btn) ? 'btn-success' : 'btn-default'" ng-click="actionConfig.action(btn)" ng-repeat="btn in actionConfig.buttons"><span ng-bind-html="btn.label"></span></a>
+                <a type="button" class="wtt-btn wtt-btn-xs" ng-class="actionConfig.selected(btn) ? 'wtt-btn-success' : 'wtt-btn-default'" ng-click="actionConfig.action(btn)" ng-repeat="btn in actionConfig.buttons"><span ng-bind-html="btn.label"></span></a>
             </div>
         </div>
         <ul class="suggestions-list">
